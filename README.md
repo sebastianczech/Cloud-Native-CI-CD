@@ -17,8 +17,11 @@ brew install graphviz
 
 ```bash
 cd design
-python diagram.py
+python cloud_native_ci.py
+python cloud_native_cd.py
 ```
 
 ![Continuous integration pipeline](design/cloud_native_ci.png "Continuous integration pipeline")
+
+![Continuous deployment pipeline](design/cloud_native_cd.png "Continuous deployment pipeline")
 
