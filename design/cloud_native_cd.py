@@ -16,7 +16,7 @@ with Diagram("Cloud native CD", show=False):
         registry = Docker("registry")
         cd = Tekton("cd")
 
-        app >> Edge(label="pull request on branch master to build image", style="dashed") >> registry 
+        app >> Edge(label="pull request", style="dashed") >> registry 
         registry >> Edge(label="update image", style="dashed") >> cd 
         cd >> Edge(label="provision prod infra") >> infra_prod
         infra_prod >> Edge(label="integration tests") >> pytest 
@@ -29,7 +29,7 @@ with Diagram("Cloud native CD", show=False):
         registry = Docker("registry")
         cd = Tekton("cd")
 
-        app >> Edge(label="pull request on branch stage to build image", style="dashed") >> registry 
+        app >> Edge(label="pull request into stage", style="dashed") >> registry 
         registry >> Edge(label="update image", style="dashed") >> cd 
         cd >> Edge(label="provision stage infra") >> infra_stage
         infra_stage >> Edge(label="integration tests") >> pytest 
@@ -42,7 +42,7 @@ with Diagram("Cloud native CD", show=False):
         registry = Docker("registry")
         cd = Tekton("cd")
 
-        app >> Edge(label="push commit on every branch to build image", style="dashed") >> registry 
+        app >> Edge(label="push commit into master", style="dashed") >> registry 
         registry >> Edge(label="update image", style="dashed") >> cd 
         cd >> Edge(label="provision dev infra") >> infra_dev
         infra_dev >> Edge(label="integration tests") >> pytest 
