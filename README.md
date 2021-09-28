@@ -19,7 +19,6 @@ brew install graphviz
 
 ```bash
 pip install boto3
-pip freeze > requirements.txt
 ```
 
 ### Install ``localstack``:
@@ -27,6 +26,12 @@ pip freeze > requirements.txt
 ```bash
 pip install localstack
 pip install localstack-client
+```
+
+### Freeze installed packages
+
+```bash
+pip freeze > requirements.txt
 ```
 
 ## Design
