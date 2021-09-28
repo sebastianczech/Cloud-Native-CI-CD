@@ -15,13 +15,13 @@ pip install diagrams
 brew install graphviz
 ```
 
-### Install ``boto3``:
+### Install ``boto3``
 
 ```bash
 pip install boto3
 ```
 
-### Install ``localstack``:
+### Install ``localstack``
 
 ```bash
 pip install localstack
