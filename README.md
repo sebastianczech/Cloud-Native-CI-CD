@@ -37,7 +37,38 @@ python cloud_native_cd.py
 
 ### Localstack
 
+Start AWS services on local machine:
+
 ```bash
-cd cd infra/localstack
+cd infra/localstack
 docker-compose up
+```
+
+### Terraform
+
+Provision DynamoDB and S3:
+
+```bash
+cd infra/localstack
+terraform init
+terraform plan
+terraform apply --auto-approve
+```
+
+Check DynamoDB:
+
+```bash
+aws --endpoint-url=http://localhost:4566 dynamodb list-tables
+
+aws --endpoint-url http://localhost:4566 dynamodb scan --table-name demo-dynamodb-tf
+```
+
+Create S3 bucket and check it:
+
+```bash
+aws --endpoint-url=http://localhost:4566 s3 mb s3://demo-bucket-cli
+aws --endpoint-url=http://localhost:4566 s3api put-bucket-acl --bucket demo-bucket-cli --acl public-read
+
+aws --endpoint-url=http://localhost:4566 s3 ls
+aws --endpoint-url=http://localhost:4566 s3 ls s3://demo-bucket-cli
 ```

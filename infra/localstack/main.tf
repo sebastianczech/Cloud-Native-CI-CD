@@ -17,8 +17,8 @@ provider "aws" {
 }
 
 // DYNAMODB TABLES
-resource "aws_dynamodb_table" "dogs" {
-  name           = "dogs"
+resource "aws_dynamodb_table" "demo-dynamodb-tf" {
+  name           = "demo-dynamodb-tf"
   read_capacity  = "20"
   write_capacity = "20"
   hash_key       = "ID"
@@ -30,7 +30,7 @@ resource "aws_dynamodb_table" "dogs" {
 }
 
 // S3
-resource "aws_s3_bucket" "items" {
-  bucket = "demo-bucket-terraform"
+resource "aws_s3_bucket" "demo-bucket-tf" {
+  bucket = "demo-bucket-tf"
   acl    = "public-read"
 }
