@@ -33,3 +33,11 @@ python cloud_native_cd.py
 
 ![Continuous deployment pipeline](design/cloud_native_cd.png "Continuous deployment pipeline")
 
+## Infrastructure
+
+### Localstack
+
+```bash
+cd cd infra/localstack
+docker-compose up
+```
