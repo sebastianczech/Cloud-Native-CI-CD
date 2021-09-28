@@ -15,6 +15,20 @@ pip install diagrams
 brew install graphviz
 ```
 
+### Install ``boto3``:
+
+```bash
+pip install boto3
+pip freeze > requirements.txt
+```
+
+### Install ``localstack``:
+
+```bash
+pip install localstack
+pip install localstack-client
+```
+
 ## Design
 
 ### Generate pictures from code
@@ -72,3 +86,5 @@ aws --endpoint-url=http://localhost:4566 s3api put-bucket-acl --bucket demo-buck
 aws --endpoint-url=http://localhost:4566 s3 ls
 aws --endpoint-url=http://localhost:4566 s3 ls s3://demo-bucket-cli
 ```
+
+## Application
