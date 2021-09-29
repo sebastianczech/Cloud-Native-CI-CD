@@ -1,3 +1,4 @@
+attrs==21.2.0
 boto3==1.18.50
 botocore==1.21.50
 certifi==2021.5.30
@@ -12,15 +13,21 @@ docker==5.0.0
 dulwich==0.20.25
 graphviz==0.16
 idna==2.10
+iniconfig==1.1.1
 Jinja2==2.11.3
 jmespath==0.10.0
 localstack==0.12.18
 localstack-client==1.25
 localstack-ext==0.12.17.11
 MarkupSafe==2.0.1
+packaging==21.0
 pbr==5.6.0
+pluggy==1.0.0
+py==1.10.0
 pyaes==1.6.1
 Pygments==2.10.0
+pyparsing==2.4.7
+pytest==6.2.5
 python-dateutil==2.8.2
 PyYAML==5.4.1
 requests==2.25.1
@@ -29,5 +36,6 @@ s3transfer==0.5.0
 six==1.16.0
 stevedore==3.4.0
 tabulate==0.8.9
+toml==0.10.2
 urllib3==1.26.7
 websocket-client==1.2.1

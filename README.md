@@ -28,6 +28,12 @@ pip install localstack
 pip install localstack-client
 ```
 
+### Install ``pytest``
+
+```bash
+pip install pytest
+```
+
 ### Freeze installed packages
 
 ```bash
