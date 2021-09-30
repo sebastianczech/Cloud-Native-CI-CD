@@ -74,7 +74,7 @@ docker-compose up
 Provision DynamoDB and S3:
 
 ```bash
-cd infra/localstack
+cd infra/terraform
 terraform init
 terraform plan
 terraform apply --auto-approve
