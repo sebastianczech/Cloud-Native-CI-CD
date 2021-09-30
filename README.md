@@ -2,7 +2,7 @@
 
 Example of continuous integration and deploy pipelines, configuration and code for simple cloud native application.
 
-## Prerequisites 
+## Prerequisites
 
 ### Install ``diagrams`` tools
 
@@ -100,7 +100,18 @@ aws --endpoint-url=http://localhost:4566 s3 ls s3://demo-bucket-cli
 
 ## Application
 
+### Running
+
+```bash
+cd app/src
+python main.py
+```
+
+### Testing
+
 ```bash
 cd app
-python main.py
+pytest tests
+pytest -s tests # print to console
+INFRA_LOCALSTACK_PROTOCOL=http INFRA_LOCALSTACK_ADDRESS=127.0.0.1 INFRA_LOCALSTACK_PORT=4566 pytest tests
 ```
