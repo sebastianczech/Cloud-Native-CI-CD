@@ -1,4 +1,4 @@
-name: Continuous integration - Python app
+name: ci-app
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build-test:
 
     runs-on: ubuntu-latest
 
