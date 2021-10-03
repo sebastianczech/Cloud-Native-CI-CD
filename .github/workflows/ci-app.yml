@@ -30,4 +30,4 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest (only app, not infra)
       run: |
-        cd app/tests && pytest app/tests/test_main.py
+        cd app/tests && pytest test_main.py
