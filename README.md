@@ -69,6 +69,12 @@ cd infra/localstack
 docker-compose up
 ```
 
+Test localstack:
+
+```bash
+pytest test_localstack.py
+```
+
 ### Terraform
 
 Provision DynamoDB and S3:
