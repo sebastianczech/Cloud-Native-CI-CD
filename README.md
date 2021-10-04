@@ -117,7 +117,7 @@ python main.py
 
 ```bash
 docker build --tag python-localstack-client -f app/Dockerfile .
-docker run --name python-localstack-client python-localstack-client
+docker run --name python-localstack-client --rm python-localstack-client
 ```
 
 ### Testing
