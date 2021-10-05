@@ -60,10 +60,18 @@ python cloud_native_cd.py
 
 ## Infrastructure
 
-### GitHub Actions
+### Continuous integration
+
+#### GitHub actions
 
 ![GitHub actions](images/github_actions.png "GitHub actions")
+
+#### GitHub secrets
+
 ![GitHub secrets](images/github_secrets.png "GitHub secrets")
+
+#### Docker Hub tokens
+
 ![Docker Hub tokens](images/docker_hub_tokens.png "Docker Hub tokens")
 
 ### Localstack
