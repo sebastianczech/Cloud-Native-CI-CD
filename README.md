@@ -60,6 +60,12 @@ python cloud_native_cd.py
 
 ## Infrastructure
 
+### GitHub Actions
+
+![GitHub actions](images/github_actions.png "GitHub actions")
+![GitHub secrets](images/github_secrets.png "GitHub secrets")
+![Docker Hub tokens](images/docker_hub_tokens.png "Docker Hub tokens")
+
 ### Localstack
 
 Start AWS services on local machine:
