@@ -133,6 +133,8 @@ LOCALSTACK_HOST=192.168.0.106 python main.py # connect to different Localstack h
 ```bash
 docker build --tag python-localstack-client -f app/Dockerfile .
 docker run --name python-localstack-client --rm python-localstack-client
+docker run --name python-localstack-client --rm -it -e LOCALSTACK_HOST=192.168.0.106 python-localstack-client # change Localstack host
+docker run --name python-localstack-client --rm -it python-localstack-client bash # run bash instead of command
 ```
 
 ### Testing
