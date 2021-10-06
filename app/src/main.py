@@ -19,7 +19,6 @@ def info_time():
 
 
 def s3_list_buckets():
-    # Let's use Amazon S3
     s3 = boto3.resource('s3')
     return s3.buckets.all()
 
