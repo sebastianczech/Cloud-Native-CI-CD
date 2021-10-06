@@ -4,9 +4,47 @@ metadata:
   name: pull-docker-image
 spec:
   steps:
-    - name: pull-docker-image
+    - name: start-pull-docker-image
       image: ubuntu
       command:
         - echo
       args:
-        - "Docker pull"
+        - "CD pipeline - docker pull, pytest and runs"
+    - name: pull-docker-start-container
+      image: docker
+      script: |
+        docker pull sebaczech/python-localstack-client:main
+        docker images
+        docker run --name python-localstack-client --rm -e LOCALSTACK_HOST=192.168.0.106 sebaczech/python-localstack-client:main
+      volumeMounts:
+        - mountPath: /var/run/
+          name: dind-socket
+    # - name: start-container
+    #   image: docker
+    #   command: ["docker"]
+    #   args:
+    #     - "run"
+    #     - "--name"
+    #     - "python-localstack-client"
+    #     - "--rm"
+    #     - "-e"
+    #     - "LOCALSTACK_HOST=192.168.0.106"
+    #     - "sebaczech/python-localstack-client"
+    #   volumeMounts:
+    #     - mountPath: /var/run/
+    #       name: dind-socket
+  sidecars:
+    - image: docker:18.05-dind
+      name: server
+      securityContext:
+        privileged: true
+      volumeMounts:
+        - mountPath: /var/lib/docker
+          name: dind-storage
+        - mountPath: /var/run/
+          name: dind-socket
+  volumes:
+    - name: dind-storage
+      emptyDir: {}
+    - name: dind-socket
+      emptyDir: {}

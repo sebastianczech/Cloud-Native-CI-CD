@@ -110,7 +110,6 @@ Start task:
 tkn task start pull-docker-image -n tekton-pipelines
 
 tkn taskrun logs pull-docker-image-run-mpkms -f -n tekton-pipelines
-
 tkn taskrun logs --last -f -n tekton-pipelines
 ```
 
@@ -121,10 +120,18 @@ kubectl apply --filename https://github.com/tektoncd/dashboard/releases/latest/d
 kubectl proxy --port=8080
 ```
 
-Access dashboard [localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/](http://localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/) or use port forwarding to access dashboard on [localhost:9097](localhost:9097):
+Access dashboard [localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/](http://localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/) or use port forwarding to access dashboard on [localhost:9097](http://localhost:9097):
 
 ```bash
-kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
+```
+
+Using [Tekton Pipelines Tutorial](https://github.com/tektoncd/pipeline/blob/main/docs/tutorial.md) and [Build and deploy a Docker image on Kubernetes using Tekton Pipelines](https://developer.ibm.com/tutorials/build-and-deploy-a-docker-image-on-kubernetes-using-tekton-pipelines/) it was prepared whole CD pipeline.
+
+After every change of pipeline, definition needs to be update:
+
+```bash
+kubectl apply -f tkn-task-pull-image.yml -n tekton-pipelines
+tkn task start pull-docker-image -n tekton-pipelines
 ```
 
 ### Localstack
