@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: pull-docker-image
+spec:
+  steps:
+    - name: pull-docker-image
+      image: ubuntu
+      command:
+        - echo
+      args:
+        - "Docker pull"

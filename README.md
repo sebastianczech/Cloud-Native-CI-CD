@@ -60,7 +60,7 @@ python cloud_native_cd.py
 
 ## Infrastructure
 
-### Continuous integration
+### Pipeline - continuous integration
 
 #### GitHub actions
 
@@ -73,6 +73,59 @@ python cloud_native_cd.py
 #### Docker Hub tokens
 
 ![Docker Hub tokens](images/docker_hub_tokens.png "Docker Hub tokens")
+
+### Pipeline - continuous deployment
+
+Install [Tekton](https://tekton.dev/docs/getting-started/):
+
+```bash
+kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
+kubectl get pods --namespace tekton-pipelines
+```
+
+Install Tekton CLI:
+
+```bash
+brew tap tektoncd/tools
+brew install tektoncd/tools/tektoncd-cli
+```
+
+Create simple *a* task in file [`tkn-task-pull-image.yml`](infra/pipelines/tkn-task-pull-image.yml) and apply task:
+
+```bash
+kubectl apply -f tkn-task-pull-image.yml -n tekton-pipelines
+```
+
+Show task:
+
+```bash
+tkn task list -n tekton-pipelines
+
+tkn task start pull-docker-image --dry-run -n tekton-pipelines
+```
+
+Start task:
+
+```bash
+tkn task start pull-docker-image -n tekton-pipelines
+
+tkn taskrun logs pull-docker-image-run-mpkms -f -n tekton-pipelines
+
+tkn taskrun logs --last -f -n tekton-pipelines
+```
+
+Create dashboard:
+
+```bash
+kubectl apply --filename https://github.com/tektoncd/dashboard/releases/latest/download/tekton-dashboard-release.yaml
+kubectl proxy --port=8080
+```
+
+Access dashboard [localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/](http://localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/) or use port forwarding to access dashboard on [localhost:9097](localhost:9097):
+
+```bash
+kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
+```
 
 ### Localstack
 
