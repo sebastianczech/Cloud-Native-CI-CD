@@ -150,8 +150,10 @@ tkn task start pull-docker-image -n tekton-pipelines
 Clean tasks and runs:
 
 ```bash
-tkn taskrun delete --all
-tkn task delete --all
+tkn pipelinerun delete --all -f
+tkn pipeline delete --all -f
+tkn taskrun delete --all -f
+tkn task delete --all -f
 ```
 
 ### Localstack

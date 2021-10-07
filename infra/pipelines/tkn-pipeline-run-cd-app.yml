@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: pipeline-run-cd-app
+spec:
+  pipelineRef:
+    name: pipeline-cd-app
+  workspaces:
+  - name: shared-data
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
+  params:
+  - name: repo-url
+    value: https://github.com/sebastianczech/Cloud-Native-CI-CD
+  - name: branch-name
+    value: main
