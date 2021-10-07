@@ -56,3 +56,11 @@ spec:
         script: |
           #!/usr/bin/env zsh
           cat $(workspaces.source.path)/README.md
+  - name: setup-infra
+    runAfter: ["cat-readme"]
+    taskRef:
+      name: task-setup-infra
+  - name: pull-image
+    runAfter: ["setup-infra"]
+    taskRef:
+      name: task-pull-image
