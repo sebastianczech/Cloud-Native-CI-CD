@@ -1,0 +1,58 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pipeline-cd-app
+spec:
+  description: |
+    CD pipeline for Cloud Native application
+  params:
+  - name: repo-url
+    type: string
+    description: The git repository URL to clone from.
+  - name: branch-name
+    type: string
+    description: The git branch to clone.
+  workspaces:
+  - name: shared-data
+    description: |
+      This workspace will receive the cloned git repo and be passed
+      to the next Task for the repo's README.md file to be read.
+  tasks:
+  - name: info-pipeline-cd-app
+    workspaces:
+    - name: source
+      workspace: shared-data  
+    taskSpec:
+      workspaces:
+      - name: source
+      steps:    
+      - image: ubuntu
+        command:
+          - echo
+        args:
+          - "CD pipeline for Cloud Native application"
+  - name: fetch-repo
+    runAfter: ["info-pipeline-cd-app"]
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: shared-data
+    params:
+    - name: url
+      value: $(params.repo-url)
+    - name: revision
+      value: $(params.branch-name)
+  - name: cat-readme
+    runAfter: ["fetch-repo"]
+    workspaces:
+    - name: source
+      workspace: shared-data
+    taskSpec:
+      workspaces:
+      - name: source
+      steps:
+      - image: zshusers/zsh:4.3.15
+        script: |
+          #!/usr/bin/env zsh
+          cat $(workspaces.source.path)/README.md
