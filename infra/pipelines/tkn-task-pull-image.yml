@@ -19,20 +19,6 @@ spec:
       volumeMounts:
         - mountPath: /var/run/
           name: dind-socket
-    # - name: start-container
-    #   image: docker
-    #   command: ["docker"]
-    #   args:
-    #     - "run"
-    #     - "--name"
-    #     - "python-localstack-client"
-    #     - "--rm"
-    #     - "-e"
-    #     - "LOCALSTACK_HOST=192.168.0.106"
-    #     - "sebaczech/python-localstack-client"
-    #   volumeMounts:
-    #     - mountPath: /var/run/
-    #       name: dind-socket
   sidecars:
     - image: docker:18.05-dind
       name: server
