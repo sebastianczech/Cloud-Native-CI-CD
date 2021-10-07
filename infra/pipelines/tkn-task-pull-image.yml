@@ -1,16 +1,10 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: pull-docker-image
+  name: task-pull-image
 spec:
   steps:
-    - name: start-pull-docker-image
-      image: ubuntu
-      command:
-        - echo
-      args:
-        - "CD pipeline - docker pull, pytest and runs"
-    - name: pull-docker-start-container
+    - name: pull-run-docker-container
       image: docker
       script: |
         docker pull sebaczech/python-localstack-client:main

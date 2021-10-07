@@ -40,6 +40,22 @@ pip install pytest
 pip freeze > requirements.txt
 ```
 
+### TektonCD
+
+Install [Tekton](https://tekton.dev/docs/getting-started/):
+
+```bash
+kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
+kubectl get pods --namespace tekton-pipelines
+```
+
+Install Tekton CLI:
+
+```bash
+brew tap tektoncd/tools
+brew install tektoncd/tools/tektoncd-cli
+```
+
 ## Design
 
 ### Generate pictures from code
@@ -76,24 +92,16 @@ python cloud_native_cd.py
 
 ### Pipeline - continuous deployment
 
-Install [Tekton](https://tekton.dev/docs/getting-started/):
+Install referenced tasks for [cloning git repositories](https://hub.tekton.dev/tekton/task/git-clone):
 
-```bash
-kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
-kubectl get pods --namespace tekton-pipelines
+```
+kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.4/git-clone.yaml
 ```
 
-Install Tekton CLI:
+Create tasks:
 
 ```bash
-brew tap tektoncd/tools
-brew install tektoncd/tools/tektoncd-cli
-```
-
-Create simple *a* task in file [`tkn-task-pull-image.yml`](infra/pipelines/tkn-task-pull-image.yml) and apply task:
-
-```bash
-kubectl apply -f tkn-task-pull-image.yml -n tekton-pipelines
+kubectl apply -f infra/pipelines -n tekton-pipelines
 ```
 
 Show task:
@@ -108,12 +116,16 @@ Start task:
 
 ```bash
 tkn task start pull-docker-image -n tekton-pipelines
+```
 
+Check logs:
+
+```bash
 tkn taskrun logs pull-docker-image-run-mpkms -f -n tekton-pipelines
 tkn taskrun logs --last -f -n tekton-pipelines
 ```
 
-Create dashboard:
+Show dashboard:
 
 ```bash
 kubectl apply --filename https://github.com/tektoncd/dashboard/releases/latest/download/tekton-dashboard-release.yaml
@@ -133,6 +145,13 @@ After every change of pipeline, definition needs to be update:
 ```bash
 kubectl apply -f tkn-task-pull-image.yml -n tekton-pipelines
 tkn task start pull-docker-image -n tekton-pipelines
+```
+
+Clean tasks and runs:
+
+```bash
+tkn taskrun delete --all
+tkn task delete --all
 ```
 
 ### Localstack

@@ -1,0 +1,18 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: task-setup-infra
+spec:
+  steps:
+    - name: localstack-start
+      image: ubuntu
+      command:
+        - echo
+      args:
+        - "step - start Localstack"
+    - name: localstack-test
+      image: ubuntu
+      command:
+        - echo
+      args:
+        - "step - test Localstack"
