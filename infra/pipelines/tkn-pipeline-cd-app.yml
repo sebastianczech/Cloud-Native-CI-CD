@@ -9,9 +9,11 @@ spec:
   - name: repo-url
     type: string
     description: The git repository URL to clone from.
+    default: https://github.com/sebastianczech/Cloud-Native-CI-CD
   - name: branch-name
     type: string
     description: The git branch to clone.
+    default: main
   workspaces:
   - name: shared-data
     description: |
@@ -26,7 +28,8 @@ spec:
       workspaces:
       - name: source
       steps:    
-      - image: ubuntu
+      - name: info-message
+        image: ubuntu
         command:
           - echo
         args:
@@ -52,7 +55,16 @@ spec:
       workspaces:
       - name: source
       steps:
-      - image: zshusers/zsh:4.3.15
+      - name: list-files
+        image: zshusers/zsh:4.3.15
+        script: |
+          #!/usr/bin/env zsh
+          pwd
+          ls -al
+          echo $(workspaces.source.path)
+          ls -la $(workspaces.source.path)
+      - name: show-readme
+        image: zshusers/zsh:4.3.15
         script: |
           #!/usr/bin/env zsh
           cat $(workspaces.source.path)/README.md
@@ -60,6 +72,9 @@ spec:
     runAfter: ["cat-readme"]
     taskRef:
       name: task-setup-infra
+    workspaces:
+    - name: source
+      workspace: shared-data
   - name: pull-image
     runAfter: ["setup-infra"]
     taskRef:

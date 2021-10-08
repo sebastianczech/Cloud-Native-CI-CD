@@ -3,7 +3,13 @@ kind: Task
 metadata:
   name: task-setup-infra
 spec:
+  workspaces:
+  - name: source
   steps:
+    - name: list-files
+      image: ubuntu
+      command: ["ls"]
+      args: ["-la", "$(workspaces.source.path)"]
     - name: localstack-start
       image: ubuntu
       command:
