@@ -143,8 +143,11 @@ Using [Tekton Pipelines Tutorial](https://github.com/tektoncd/pipeline/blob/main
 After every change of pipeline, definition needs to be update:
 
 ```bash
-kubectl apply -f tkn-task-pull-image.yml -n tekton-pipelines
+kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.4/git-clone.yaml
+kubectl apply -f infra/pipelines -n tekton-pipelines
+
 tkn task start pull-docker-image -n tekton-pipelines
+tkn pipeline start pipeline-cd-app --use-param-defaults --workspace name=shared-data,claimName=pvc-pipelines,subPath=dir
 ```
 
 Clean tasks and runs:
@@ -154,6 +157,8 @@ tkn pipelinerun delete --all -f
 tkn pipeline delete --all -f
 tkn taskrun delete --all -f
 tkn task delete --all -f
+
+kubectl delete namespace tekton-pipelines
 ```
 
 ### Localstack
