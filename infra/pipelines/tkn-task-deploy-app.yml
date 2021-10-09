@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: task-pull-image
+  name: task-deploy-app
 spec:
   steps:
     - name: pull-run-docker-container

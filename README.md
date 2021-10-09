@@ -92,6 +92,13 @@ python cloud_native_cd.py
 
 ### Pipeline - continuous deployment
 
+Prepare namespace:
+
+```
+kubectl create namespace cloud-native-app
+kubens cloud-native-app
+```
+
 Install referenced tasks for [cloning git repositories](https://hub.tekton.dev/tekton/task/git-clone):
 
 ```
@@ -101,28 +108,28 @@ kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/gi
 Create tasks:
 
 ```bash
-kubectl apply -f infra/pipelines -n tekton-pipelines
+kubectl apply -f infra/pipelines -n cloud-native-app
 ```
 
 Show task:
 
 ```bash
-tkn task list -n tekton-pipelines
+tkn task list -n cloud-native-app
 
-tkn task start pull-docker-image --dry-run -n tekton-pipelines
+tkn task start pull-docker-image --dry-run -n cloud-native-app
 ```
 
 Start task:
 
 ```bash
-tkn task start pull-docker-image -n tekton-pipelines
+tkn task start pull-docker-image -n cloud-native-app
 ```
 
 Check logs:
 
 ```bash
-tkn taskrun logs pull-docker-image-run-mpkms -f -n tekton-pipelines
-tkn taskrun logs --last -f -n tekton-pipelines
+tkn taskrun logs pull-docker-image-run-mpkms -f -n cloud-native-app
+tkn taskrun logs --last -f -n cloud-native-app
 ```
 
 Show dashboard:
@@ -132,7 +139,7 @@ kubectl apply --filename https://github.com/tektoncd/dashboard/releases/latest/d
 kubectl proxy --port=8080
 ```
 
-Access dashboard [localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/](http://localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/) or use port forwarding to access dashboard on [localhost:9097](http://localhost:9097):
+Access dashboard [localhost:8080/api/v1/namespaces/cloud-native-app/services/tekton-dashboard:http/proxy/](http://localhost:8080/api/v1/namespaces/cloud-native-app/services/tekton-dashboard:http/proxy/) or use port forwarding to access dashboard on [localhost:9097](http://localhost:9097):
 
 ```bash
 kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
@@ -143,11 +150,10 @@ Using [Tekton Pipelines Tutorial](https://github.com/tektoncd/pipeline/blob/main
 After every change of pipeline, definition needs to be update:
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.4/git-clone.yaml
-kubectl apply -f infra/pipelines -n tekton-pipelines
+kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.4/git-clone.yaml -n cloud-native-app
+kubectl apply -f infra/pipelines -n cloud-native-app
 
-tkn task start pull-docker-image -n tekton-pipelines
-tkn pipeline start pipeline-cd-app --use-param-defaults --workspace name=shared-data,claimName=pvc-pipelines,subPath=dir
+tkn pipeline start pipeline-cd-app -n cloud-native-app --use-param-defaults --workspace name=shared-data,claimName=pvc-pipelines,subPath=dir
 ```
 
 Clean tasks and runs:
@@ -158,7 +164,7 @@ tkn pipeline delete --all -f
 tkn taskrun delete --all -f
 tkn task delete --all -f
 
-kubectl delete namespace tekton-pipelines
+kubectl delete namespace cloud-native-app
 ```
 
 ### Localstack

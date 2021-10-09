@@ -34,7 +34,7 @@ spec:
           - echo
         args:
           - "CD pipeline for Cloud Native application"
-  - name: fetch-repo
+  - name: clone-repo
     runAfter: ["info-pipeline-cd-app"]
     taskRef:
       name: git-clone
@@ -46,36 +46,14 @@ spec:
       value: $(params.repo-url)
     - name: revision
       value: $(params.branch-name)
-  - name: cat-readme
-    runAfter: ["fetch-repo"]
-    workspaces:
-    - name: source
-      workspace: shared-data
-    taskSpec:
-      workspaces:
-      - name: source
-      steps:
-      - name: list-files
-        image: zshusers/zsh:4.3.15
-        script: |
-          #!/usr/bin/env zsh
-          pwd
-          ls -al
-          echo $(workspaces.source.path)
-          ls -la $(workspaces.source.path)
-      - name: show-readme
-        image: zshusers/zsh:4.3.15
-        script: |
-          #!/usr/bin/env zsh
-          cat $(workspaces.source.path)/README.md
   - name: setup-infra
-    runAfter: ["cat-readme"]
+    runAfter: ["clone-repo"]
     taskRef:
       name: task-setup-infra
     workspaces:
     - name: source
       workspace: shared-data
-  - name: pull-image
+  - name: deploy-app
     runAfter: ["setup-infra"]
     taskRef:
-      name: task-pull-image
+      name: task-deploy-app
