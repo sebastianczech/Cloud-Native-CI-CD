@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-pod
+  labels:
+    app: cloud-native-app
+spec:
+  containers:
+    - name: app-container
+      image: sebaczech/python-localstack-client:main
+      env:
+      - name: LOCALSTACK_HOST
+        value: "192.168.0.106"
