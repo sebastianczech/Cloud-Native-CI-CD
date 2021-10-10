@@ -14,15 +14,8 @@ spec:
         ls -al
         echo $(workspaces.source.path)
         ls -la $(workspaces.source.path)
-    - name: localstack-start
-      image: ubuntu
-      command:
-        - echo
-      args:
-        - "step - start Localstack"
     - name: localstack-test
-      image: ubuntu
-      command:
-        - echo
-      args:
-        - "step - test Localstack"
+      image: python:3
+      script: |
+        pip install -r $(workspaces.source.path)/requirements.txt
+        INFRA_LOCALSTACK_ADDRESS=192.168.0.106 pytest $(workspaces.source.path)/infra/localstack
