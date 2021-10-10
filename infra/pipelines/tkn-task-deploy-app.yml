@@ -1,34 +1,22 @@
 apiVersion: tekton.dev/v1beta1
-kind: TaskRun
+kind: Task
 metadata:
   name: task-deploy-app
 spec:
-  taskRef:
-    name: kubectl-deploy-pod
-  params:
-  - name: action
-    value: create
-  - name: success-condition
-    value: status.phase == Running
-  - name: failure-condition
-    value: status.phase in (Failed, Error)
-  - name: output
-    value: |
-      - name: job-name
-        valueFrom: '{.metadata.name}'
-      - name: job-namespace
-        valueFrom: '{.metadata.namespace}'
-  - name: set-ownerreference
-    value: "true"
-  - name: manifest
-    value: |
-      apiVersion: v1
-      kind: Pod
-      metadata:
-        name: app-pod
-        labels:
-          app: cloud-native-app
-      spec:
-        containers:
-        - name: app-container
-          image: sebaczech/python-localstack-client:main
+  workspaces:
+  - name: source
+  steps:
+    - name: kubectl-apply-app-configuration
+      image: gcr.io/cloud-builders/kubectl
+      script: |
+        echo "----------- INFO -----------"
+        kubectl get pods --all-namespaces
+        ls -al
+        echo $(workspaces.source.path)
+        ls -la $(workspaces.source.path)
+        # kubectl delete -f $(workspaces.source.path)/infra/app
+        echo "----------- DEPLOY -----------"
+        kubectl apply -f $(workspaces.source.path)/infra/app
+        echo "----------- CHECK -----------"
+        kubectl describe pod app-pod
+        kubectl logs app-pod

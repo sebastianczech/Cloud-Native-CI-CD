@@ -105,6 +105,12 @@ Install referenced tasks for [cloning git repositories](https://hub.tekton.dev/t
 kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.4/git-clone.yaml -n cloud-native-app
 ```
 
+Install referenced tasks for [Kubernetes actions](https://hub.tekton.dev/tekton/task/kubernetes-actions):
+
+```
+kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/kubernetes-actions/0.2/kubernetes-actions.yaml -n cloud-native-app
+```
+
 Create tasks:
 
 ```bash
