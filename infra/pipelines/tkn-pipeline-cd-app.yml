@@ -53,6 +53,10 @@ spec:
     workspaces:
     - name: source
       workspace: shared-data
+  - name: run-app
+    runAfter: ["setup-infra"]
+    taskRef:
+      name: task-run-app
   - name: deploy-app
     runAfter: ["setup-infra"]
     taskRef:

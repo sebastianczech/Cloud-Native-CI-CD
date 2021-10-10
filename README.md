@@ -102,7 +102,7 @@ kubens cloud-native-app
 Install referenced tasks for [cloning git repositories](https://hub.tekton.dev/tekton/task/git-clone):
 
 ```
-kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.4/git-clone.yaml
+kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.4/git-clone.yaml -n cloud-native-app
 ```
 
 Create tasks:
@@ -150,9 +150,12 @@ Using [Tekton Pipelines Tutorial](https://github.com/tektoncd/pipeline/blob/main
 After every change of pipeline, definition needs to be update:
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.4/git-clone.yaml -n cloud-native-app
 kubectl apply -f infra/pipelines -n cloud-native-app
+```
 
+Pipeline can be started:
+
+```bash
 tkn pipeline start pipeline-cd-app -n cloud-native-app --use-param-defaults --workspace name=shared-data,claimName=pvc-pipelines,subPath=dir
 ```
 
@@ -163,7 +166,11 @@ tkn pipelinerun delete --all -f
 tkn pipeline delete --all -f
 tkn taskrun delete --all -f
 tkn task delete --all -f
+```
 
+Remove namespace:
+
+```bash
 kubectl delete namespace cloud-native-app
 ```
 
