@@ -165,6 +165,13 @@ Pipeline can be started:
 tkn pipeline start pipeline-cd-app -n cloud-native-app --use-param-defaults --workspace name=shared-data,claimName=pvc-pipelines,subPath=dir
 ```
 
+Tekton pipelines, pipeline runs, tasks and task runs:
+
+![Tekton pipeline](images/tkn_pipeline.png "Tekton pipeline")
+![Tekton pipeline run](images/tkn_pipeline_run.png "Tekton pipeline run")
+![Tekton task](images/tkn_task.png "Tekton task")
+![Tekton task run](images/tkn_task_run.png "Tekton task run")
+
 Clean tasks and runs:
 
 ```bash
