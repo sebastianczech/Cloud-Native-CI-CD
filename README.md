@@ -4,7 +4,15 @@ Example of continuous integration and deploy pipelines, configuration and code f
 
 ## Prerequisites
 
+All Python packages can installed from ``requirements.txt``:
+
+```
+pip install -r requirements.txt
+```
+
 ### Install ``diagrams`` tools
+
+All diagrams were generated from code using ``diagrams`` tool:
 
 ```bash
 python3 -m venv venv
@@ -17,11 +25,15 @@ brew install graphviz
 
 ### Install ``boto3``
 
+``boto3`` library is used to connect to AWS services:
+
 ```bash
 pip install boto3
 ```
 
 ### Install ``localstack``
+
+``localstack`` tool can be used to start Localstack. Alternative solution is to use Docker Compose to start Localstack:
 
 ```bash
 pip install localstack
@@ -30,11 +42,15 @@ pip install localstack-client
 
 ### Install ``pytest``
 
+Tests in Python were prepared in ``pytest``:
+
 ```bash
 pip install pytest
 ```
 
 ### Freeze installed packages
+
+Save all installed libraries to file:
 
 ```bash
 pip freeze > requirements.txt
@@ -49,7 +65,7 @@ kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline
 kubectl get pods --namespace tekton-pipelines
 ```
 
-Install Tekton CLI:
+Install Tekton CLI to manage TektonCD:
 
 ```bash
 brew tap tektoncd/tools
@@ -57,6 +73,8 @@ brew install tektoncd/tools/tektoncd-cli
 ```
 
 ## Design
+
+Before starting work on preparing application, pipelines, Kubernetes objects for application, infrastructure code and tests, there were prepared diagrams using approach everything as a code.
 
 ### Generate pictures from code
 
@@ -78,6 +96,8 @@ python cloud_native_cd.py
 
 ### Pipeline - continuous integration
 
+Continuous integration pipeline is configured in GitHub. GitHub action is defined in [workflow ci-app](.github/workflows/ci-app.yml). Pipeline is using secrets to access Docker Hub. Configuration of an action and secrets is presented below on screenshots.
+
 #### GitHub actions
 
 ![GitHub actions](images/github_actions.png "GitHub actions")
@@ -92,24 +112,26 @@ python cloud_native_cd.py
 
 ### Pipeline - continuous deployment
 
-Prepare namespace:
+Continuous deployment pipeline is configured in TektonCD. Before executing pipeline, there is a need to prepare namespace:
 
 ```
 kubectl create namespace cloud-native-app
 kubens cloud-native-app
 ```
 
-Install referenced tasks for [cloning git repositories](https://hub.tekton.dev/tekton/task/git-clone):
+Pipeline is using external tasks, so there is a need to install referenced tasks for [cloning git repositories](https://hub.tekton.dev/tekton/task/git-clone):
 
 ```
 kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-clone/0.4/git-clone.yaml -n cloud-native-app
 ```
 
-Install referenced tasks for [Kubernetes actions](https://hub.tekton.dev/tekton/task/kubernetes-actions):
+Similar approach was to used to install referenced tasks for [Kubernetes actions](https://hub.tekton.dev/tekton/task/kubernetes-actions):
 
 ```
 kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/kubernetes-actions/0.2/kubernetes-actions.yaml -n cloud-native-app
 ```
+
+To apply all prepared TektonCD objects, following commands should be used:
 
 Create tasks:
 
@@ -117,7 +139,7 @@ Create tasks:
 kubectl apply -f infra/pipelines -n cloud-native-app
 ```
 
-Show task:
+To check some of the objects, following commands can be used e.g. to show task:
 
 ```bash
 tkn task list -n cloud-native-app
@@ -125,27 +147,27 @@ tkn task list -n cloud-native-app
 tkn task start pull-docker-image --dry-run -n cloud-native-app
 ```
 
-Start task:
+In case of a need to manually start task, following command should be used:
 
 ```bash
 tkn task start pull-docker-image -n cloud-native-app
 ```
 
-Check logs:
+To verify task runs, we can check logs by command:
 
 ```bash
 tkn taskrun logs pull-docker-image-run-mpkms -f -n cloud-native-app
 tkn taskrun logs --last -f -n cloud-native-app
 ```
 
-Show dashboard:
+Beside CLI, TektonCD has dashboard, which can be accessed by:
 
 ```bash
 kubectl apply --filename https://github.com/tektoncd/dashboard/releases/latest/download/tekton-dashboard-release.yaml
 kubectl proxy --port=8080
 ```
 
-Access dashboard [localhost:8080/api/v1/namespaces/cloud-native-app/services/tekton-dashboard:http/proxy/](http://localhost:8080/api/v1/namespaces/cloud-native-app/services/tekton-dashboard:http/proxy/) or use port forwarding to access dashboard on [localhost:9097](http://localhost:9097):
+Then you can access dashboard [localhost:8080/api/v1/namespaces/cloud-native-app/services/tekton-dashboard:http/proxy/](http://localhost:8080/api/v1/namespaces/cloud-native-app/services/tekton-dashboard:http/proxy/) or use port forwarding to access dashboard on [localhost:9097](http://localhost:9097):
 
 ```bash
 kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
@@ -165,14 +187,14 @@ Pipeline can be started:
 tkn pipeline start pipeline-cd-app -n cloud-native-app --use-param-defaults --workspace name=shared-data,claimName=pvc-pipelines,subPath=dir
 ```
 
-Tekton pipelines, pipeline runs, tasks and task runs:
+Tekton pipelines, pipeline runs, tasks and task runs from dashboard are presented in following screenshots:
 
 ![Tekton pipeline](images/tkn_pipeline.png "Tekton pipeline")
 ![Tekton pipeline run](images/tkn_pipeline_run.png "Tekton pipeline run")
 ![Tekton task](images/tkn_task.png "Tekton task")
 ![Tekton task run](images/tkn_task_run.png "Tekton task run")
 
-Clean tasks and runs:
+After finish of work to clean tasks and runs following commands can be used:
 
 ```bash
 tkn pipelinerun delete --all -f
@@ -181,7 +203,7 @@ tkn taskrun delete --all -f
 tkn task delete --all -f
 ```
 
-Remove namespace:
+At the end namespace should be removed:
 
 ```bash
 kubectl delete namespace cloud-native-app
