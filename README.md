@@ -215,6 +215,12 @@ At the end namespace should be removed:
 kubectl delete namespace cloud-native-app
 ```
 
+And docker images and other not used object can be removed:
+
+```bash
+docker system prune
+```
+
 ### Localstack
 
 Start AWS services on local machine:
