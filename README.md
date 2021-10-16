@@ -173,6 +173,12 @@ Then you can access dashboard [localhost:8080/api/v1/namespaces/cloud-native-app
 kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
 ```
 
+You can get metrics e.g. for Prometheus by accessing ``http://localhost:9090/metrics`` after configuring forwarding:
+
+```bash
+kubectl --namespace tekton-pipelines port-forward svc/tekton-pipelines-controller 9090:9090
+```
+
 Using [Tekton Pipelines Tutorial](https://github.com/tektoncd/pipeline/blob/main/docs/tutorial.md) and [Build and deploy a Docker image on Kubernetes using Tekton Pipelines](https://developer.ibm.com/tutorials/build-and-deploy-a-docker-image-on-kubernetes-using-tekton-pipelines/) it was prepared whole CD pipeline.
 
 After every change of pipeline, definition needs to be update:
