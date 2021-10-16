@@ -64,3 +64,14 @@ spec:
     runAfter: ["deploy-app"]
     taskRef:
       name: task-run-app
+  - name: show-k8s-objects
+    runAfter: ["run-app"]
+    taskRef:
+      name: kubernetes-actions
+    params:
+      - name: image
+        value: gcr.io/cloud-builders/kubectl
+      - name: script
+        value: |
+          echo "-----------"
+          kubectl get all --all-namespaces
