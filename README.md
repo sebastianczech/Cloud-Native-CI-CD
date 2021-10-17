@@ -25,7 +25,7 @@ brew install graphviz
 
 ### Install ``boto3``
 
-``boto3`` library is used to connect to AWS services:
+[``boto3`` library is used to connect to AWS services](https://github.com/boto/boto3):
 
 ```bash
 pip install boto3
@@ -33,7 +33,7 @@ pip install boto3
 
 ### Install ``localstack``
 
-``localstack`` tool can be used to start Localstack. Alternative solution is to use Docker Compose to start Localstack:
+[``localstack`` tool can be used to start Localstack. Alternative solution is to use Docker Compose to start Localstack](https://github.com/localstack/localstack):
 
 ```bash
 pip install localstack
