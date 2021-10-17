@@ -1,4 +1,3 @@
-# import boto3
 import localstack_client.session as boto3
 
 import socket

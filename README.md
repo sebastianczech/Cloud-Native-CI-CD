@@ -271,8 +271,8 @@ aws --endpoint-url=http://localhost:4566 s3 ls s3://demo-bucket-cli
 
 ```bash
 cd app/src
-python main.py
-LOCALSTACK_HOST=192.168.0.106 python main.py # connect to different Localstack host
+python main_localstack_client.py
+LOCALSTACK_HOST=192.168.0.106 python main_localstack_client.py # connect to different Localstack host
 ```
 
 ### Containerization
