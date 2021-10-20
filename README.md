@@ -291,4 +291,5 @@ cd app
 pytest tests
 pytest -s tests # print to console
 INFRA_LOCALSTACK_PROTOCOL=http INFRA_LOCALSTACK_ADDRESS=127.0.0.1 INFRA_LOCALSTACK_PORT=4566 pytest tests
+EDGE_PORT=9999 pytest test_main_localstack_client.py
 ```
