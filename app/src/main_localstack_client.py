@@ -25,12 +25,20 @@ def localstack_services():
 
 
 def s3_list_buckets():
+    ### attempt # 1
+    # os.environ['EDGE_PORT'] = "9999"
+    # s3 = session.resource('s3')
+
+    ### attetmpt # 2
     # os.environ["LOCALSTACK_HOST"] = host
     # session = localstack_client.session.Session()
+    # s3 = session.resource('s3')
+
+    ### attempt # 3
     # kwargs = {"localstack_host:: host}
     # session = localstack_client.session.Session(**kwargs)
     # s3 = session.resource('s3')
-    os.environ['EDGE_PORT'] = "9999"
+
     s3 = boto3.resource('s3')
     return s3.buckets.all()
 

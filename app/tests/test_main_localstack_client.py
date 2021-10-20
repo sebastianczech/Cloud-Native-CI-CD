@@ -37,7 +37,7 @@ def test_time_is_not_empty():
     assert ":" in time
 
 
-# def test_s3_list_is_not_empty():
+# def test_cannot_get_s3_buckets_if_localstack_not_working():
 #     with pytest.raises(botocore.exceptions.EndpointConnectionError) as exception_info:
 #         s3 = list(main_localstack_client.s3_list_buckets())
 #     assert "Could not connect to the endpoint" in str(exception_info)
