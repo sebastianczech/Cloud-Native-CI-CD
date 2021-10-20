@@ -39,5 +39,5 @@ def test_time_is_not_empty():
 
 def test_s3_list_is_not_empty():
     with pytest.raises(botocore.exceptions.EndpointConnectionError) as exception_info:
-        s3 = list(main_localstack_client.s3_list_buckets())
+        s3 = list(main_localstack_client.s3_list_buckets("192.168.0.1"))
     assert "Could not connect to the endpoint" in str(exception_info)
