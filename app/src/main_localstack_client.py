@@ -24,12 +24,14 @@ def localstack_services():
         print(service + " ---> " + boto3.config.get_service_endpoints()[service])
 
 
-def s3_list_buckets(host):
-    os.environ["LOCALSTACK_HOST"] = host
-    session = localstack_client.session.Session()
+def s3_list_buckets():
+    # os.environ["LOCALSTACK_HOST"] = host
+    # session = localstack_client.session.Session()
     # kwargs = {"localstack_host:: host}
     # session = localstack_client.session.Session(**kwargs)
-    s3 = session.resource('s3')
+    # s3 = session.resource('s3')
+    os.environ['EDGE_PORT'] = "9999"
+    s3 = boto3.resource('s3')
     return s3.buckets.all()
 
 
@@ -44,5 +46,5 @@ if __name__ == "__main__":
 
     # Print out bucket names
     print("\nS3 buckets:")
-    for bucket in s3_list_buckets("127.0.0.1"):
+    for bucket in s3_list_buckets():
         print("- " + bucket.name)
