@@ -1,8 +1,8 @@
-import boto3
-
-import socket
-import os
 import datetime
+import os
+import socket
+
+import boto3
 
 
 def info_hostname():

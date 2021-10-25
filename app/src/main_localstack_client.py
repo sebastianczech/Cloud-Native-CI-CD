@@ -1,9 +1,8 @@
-import localstack_client.session as boto3
-import localstack_client
-
-import socket
-import os
 import datetime
+import os
+import socket
+
+import localstack_client.session as boto3
 
 
 def info_hostname():
