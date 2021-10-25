@@ -6,7 +6,7 @@ import botocore
 
 sys.path.append(os.path.abspath('../src'))
 import main_boto3
-
+from main_boto3 import LocalstackConfig
 
 def test_hostname_is_not_empty():
     # given
@@ -40,9 +40,10 @@ def test_time_is_not_empty():
 
 def test_cannot_get_s3_buckets_if_localstack_not_working():
     with pytest.raises(botocore.exceptions.EndpointConnectionError) as exception_info:
-        s3 = list(main_boto3.s3_list_buckets(endpoint_url="http://localhost:9999",
+        localstackConfig = LocalstackConfig(endpoint_url="http://localhost:9999",
                                              use_ssl=False,
                                              aws_access_key_id='test',
                                              aws_secret_access_key='test',
-                                             region_name='us-east-1'))
+                                             region_name='us-east-1')
+        s3 = list(main_boto3.s3_list_buckets(localstackConfig))
     assert "Could not connect to the endpoint" in str(exception_info)
