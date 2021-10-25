@@ -36,6 +36,16 @@ def s3_list_buckets(localstackConfig):
     return s3.list_buckets()
 
 
+def s3_upload_file(localsackConfig):
+    s3 = boto3.client('s3',
+                      endpoint_url=localstackConfig.endpoint_url,
+                      use_ssl=localstackConfig.use_ssl,
+                      aws_access_key_id=localstackConfig.aws_access_key_id,
+                      aws_secret_access_key=localstackConfig.aws_secret_access_key,
+                      region_name=localstackConfig.region_name)
+    binary_data = b'Binary data stored in S3'
+    s3.put_object(Body=binary_data, Bucket='demo-bucket-tf', Key='simple_file_with_binary_data.txt')
+
 if __name__ == "__main__":
     # Print host, config and time
     print("HOST: " + info_hostname())
@@ -48,6 +58,9 @@ if __name__ == "__main__":
                                   aws_access_key_id='test',
                                   aws_secret_access_key='test',
                                   region_name='us-east-1')
+
+    # Upload binary data
+    s3_upload_file(localstackConfig)
 
     # Print out bucket names
     print("\nS3 buckets:")

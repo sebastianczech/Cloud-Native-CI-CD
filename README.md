@@ -265,6 +265,13 @@ aws --endpoint-url=http://localhost:4566 s3 ls
 aws --endpoint-url=http://localhost:4566 s3 ls s3://demo-bucket-cli
 ```
 
+Download files from S3 bucket:
+
+```bash
+ aws --endpoint-url=http://localhost:4566 s3 ls s3://demo-bucket-tf
+ aws --endpoint-url=http://localhost:4566 s3 cp s3://demo-bucket-tf/simple_file_with_binary_data.txt .
+```
+
 ## Application
 
 ### Running
