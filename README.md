@@ -272,6 +272,33 @@ Download files from S3 bucket:
  aws --endpoint-url=http://localhost:4566 s3 cp s3://demo-bucket-tf/simple_file_with_binary_data.txt .
 ```
 
+Publish message to SNS:
+
+```
+aws --endpoint-url=http://localhost:4566 sns list-topics
+aws --endpoint-url=http://localhost:4566 sns create-topic --name demo-sns-cli
+aws --endpoint-url=http://localhost:4566 sns publish --topic-arn arn:aws:sns:us-east-1:000000000000:demo-sns-cli --message "Test message sent to SNS on Localstack"
+```
+
+Prepare SQS queue to receive notifications:
+
+```
+aws --endpoint-url=http://localhost:4566 sqs list-queues
+aws --endpoint-url=http://localhost:4566 sqs create-queue --queue-name demo-sqs-cli 
+
+```
+
+Receive message from SNS:
+
+```
+aws --endpoint-url=http://localhost:4566 sns subscribe \
+              --topic-arn arn:aws:sns:us-east-1:000000000000:demo-sns-cli \
+              --protocol sqs \
+              --notification-endpoint http://localhost:4566/000000000000/demo-sqs-cli
+
+aws --endpoint-url=http://localhost:4566 sqs receive-message --queue-url http://localhost:4566/000000000000/demo-sqs-cli
+```
+
 ## Application
 
 ### Running
