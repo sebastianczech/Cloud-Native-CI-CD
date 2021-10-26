@@ -46,14 +46,20 @@ def s3_upload_file(localsackConfig):
     binary_data = b'Binary data stored in S3'
     s3.put_object(Body=binary_data, Bucket='demo-bucket-tf', Key='simple_file_with_binary_data.txt')
 
+
+def localstack_url():
+    return "http://" + str(os.environ.get('LOCALSTACK_HOST')) + ":4566"
+
+
 if __name__ == "__main__":
     # Print host, config and time
     print("HOST: " + info_hostname())
+    print("LOCALSTACK: " + localstack_url())
     print("CONFIG: " + info_config())
     print("TIME: ", info_time())
 
     # Prepare Localstack configuration
-    localstackConfig = LocalstackConfig(endpoint_url="http://localhost:4566",
+    localstackConfig = LocalstackConfig(endpoint_url=localstack_url(),
                                   use_ssl=False,
                                   aws_access_key_id='test',
                                   aws_secret_access_key='test',
