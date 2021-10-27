@@ -26,6 +26,13 @@ def info_time():
     return datetime.datetime.now().strftime("%H:%M:%S")
 
 
+def localstack_url():
+    if 'LOCALSTACK_HOST' in os.environ:
+        return "http://" + str(os.environ.get('LOCALSTACK_HOST')) + ":4566"
+    else:
+        return "http://localhost:4566"
+
+
 def s3_list_buckets(localstackConfig):
     s3 = boto3.client('s3',
                       endpoint_url=localstackConfig.endpoint_url,
@@ -36,7 +43,7 @@ def s3_list_buckets(localstackConfig):
     return s3.list_buckets()
 
 
-def s3_upload_file(localsackConfig):
+def s3_upload_file(localstackConfig, bucket):
     s3 = boto3.client('s3',
                       endpoint_url=localstackConfig.endpoint_url,
                       use_ssl=localstackConfig.use_ssl,
@@ -44,11 +51,27 @@ def s3_upload_file(localsackConfig):
                       aws_secret_access_key=localstackConfig.aws_secret_access_key,
                       region_name=localstackConfig.region_name)
     binary_data = b'Binary data stored in S3'
-    s3.put_object(Body=binary_data, Bucket='demo-bucket-tf', Key='simple_file_with_binary_data.txt')
+    s3.put_object(Body=binary_data, Bucket=bucket, Key='simple_file_with_binary_data.txt')
 
 
-def localstack_url():
-    return "http://" + str(os.environ.get('LOCALSTACK_HOST')) + ":4566"
+def s3_create_bucket(localstackConfig, bucket):
+    s3 = boto3.client('s3',
+                      endpoint_url=localstackConfig.endpoint_url,
+                      use_ssl=localstackConfig.use_ssl,
+                      aws_access_key_id=localstackConfig.aws_access_key_id,
+                      aws_secret_access_key=localstackConfig.aws_secret_access_key,
+                      region_name=localstackConfig.region_name)
+    s3.create_bucket(Bucket=bucket)
+
+
+def s3_list_object_in_bucket(localstackConfig, bucket):
+    s3 = boto3.client('s3',
+                      endpoint_url=localstackConfig.endpoint_url,
+                      use_ssl=localstackConfig.use_ssl,
+                      aws_access_key_id=localstackConfig.aws_access_key_id,
+                      aws_secret_access_key=localstackConfig.aws_secret_access_key,
+                      region_name=localstackConfig.region_name)
+    return s3.list_objects(Bucket=bucket)['Contents']
 
 
 if __name__ == "__main__":
@@ -65,10 +88,18 @@ if __name__ == "__main__":
                                   aws_secret_access_key='test',
                                   region_name='us-east-1')
 
+    # Create bucket if not exists
+    s3_create_bucket(localstackConfig, 'demo-bucket-py')
+
     # Upload binary data
-    s3_upload_file(localstackConfig)
+    s3_upload_file(localstackConfig, 'demo-bucket-py')
 
     # Print out bucket names
     print("\nS3 buckets:")
     for bucket in s3_list_buckets(localstackConfig)['Buckets']:
         print("- " + bucket['Name'])
+
+    # Print out bucket files
+    print("\nFiles in demo-bucket-py:")
+    for obj in s3_list_object_in_bucket(localstackConfig, 'demo-bucket-py'):
+        print("- " + obj['Key'])
