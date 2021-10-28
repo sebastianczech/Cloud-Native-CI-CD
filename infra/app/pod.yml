@@ -8,6 +8,7 @@ spec:
   containers:
     - name: app-container
       image: sebaczech/python-localstack-client:main
+      imagePullPolicy: Always
       env:
       - name: LOCALSTACK_HOST
         value: "192.168.0.106"
