@@ -75,3 +75,5 @@ spec:
         value: |
           echo "-----------"
           kubectl get all --all-namespaces
+          kubectl logs app-pod
+          kubectl describe pod app-pod          
