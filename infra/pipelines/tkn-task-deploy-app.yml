@@ -14,7 +14,7 @@ spec:
         ls -al
         echo $(workspaces.source.path)
         ls -la $(workspaces.source.path)
-        # kubectl delete -f $(workspaces.source.path)/infra/app
+        kubectl delete -f $(workspaces.source.path)/infra/app --ignore-not-found=true
         echo "----------- DEPLOY -----------"
         kubectl apply -f $(workspaces.source.path)/infra/app
         echo "----------- CHECK -----------"
