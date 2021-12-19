@@ -29,9 +29,9 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest (only app, not infra)
       run: |
-        cd app/tests
-        pytest test_main_localstack_client.py
-        pytest test_main_boto3.py
+        export PYTHONPATH="${PYTHONPATH}:."
+        pytest app/tests/test_main_localstack_client.py
+        pytest app/tests/test_main_boto3.py
 
   build-test:
     name: Build and push image to Docker Hub
