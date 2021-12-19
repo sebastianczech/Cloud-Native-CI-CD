@@ -167,7 +167,7 @@ kubectl apply --filename https://github.com/tektoncd/dashboard/releases/latest/d
 kubectl proxy --port=8080
 ```
 
-Then you can access dashboard [localhost:8080/api/v1/namespaces/cloud-native-app/services/tekton-dashboard:http/proxy/](http://localhost:8080/api/v1/namespaces/cloud-native-app/services/tekton-dashboard:http/proxy/) or use port forwarding to access dashboard on [localhost:9097](http://localhost:9097):
+Then you can access dashboard [localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/#/about](http://localhost:8080/api/v1/namespaces/tekton-pipelines/services/tekton-dashboard:http/proxy/#/about) or use port forwarding to access dashboard on [localhost:9097](http://localhost:9097):
 
 ```bash
 kubectl --namespace tekton-pipelines port-forward svc/tekton-dashboard 9097:9097
@@ -312,7 +312,7 @@ aws --endpoint-url=http://localhost:4566 sqs receive-message --queue-url http://
 ```bash
 cd app/src
 python main_localstack_client.py
-LOCALSTACK_HOST=192.168.0.106 python main_localstack_client.py # connect to different Localstack host
+LOCALSTACK_HOST=172.17.0.2 python main_localstack_client.py # connect to different Localstack host
 ```
 
 ### Containerization
@@ -320,7 +320,7 @@ LOCALSTACK_HOST=192.168.0.106 python main_localstack_client.py # connect to diff
 ```bash
 docker build --tag python-localstack-client -f app/Dockerfile .
 docker run --name python-localstack-client --rm python-localstack-client
-docker run --name python-localstack-client --rm -it -e LOCALSTACK_HOST=192.168.0.106 python-localstack-client # change Localstack host
+docker run --name python-localstack-client --rm -it -e LOCALSTACK_HOST=172.17.0.2 python-localstack-client # change Localstack host
 docker run --name python-localstack-client --rm -it python-localstack-client bash # run bash instead of command
 ```
 
