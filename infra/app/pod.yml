@@ -11,4 +11,4 @@ spec:
       imagePullPolicy: Always
       env:
       - name: LOCALSTACK_HOST
-        value: "192.168.0.106"
+        value: "172.17.0.2"

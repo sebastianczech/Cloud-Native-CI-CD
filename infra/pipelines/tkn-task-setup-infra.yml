@@ -18,4 +18,4 @@ spec:
       image: python:3
       script: |
         pip install -r $(workspaces.source.path)/requirements.txt
-        INFRA_LOCALSTACK_ADDRESS=192.168.0.106 pytest $(workspaces.source.path)/infra/localstack
+        INFRA_LOCALSTACK_ADDRESS=172.17.0.2 pytest $(workspaces.source.path)/infra/localstack

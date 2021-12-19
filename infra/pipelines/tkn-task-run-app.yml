@@ -9,7 +9,7 @@ spec:
       script: |
         docker pull sebaczech/python-localstack-client:main
         docker images
-        docker run --name python-localstack-client --rm -e LOCALSTACK_HOST=192.168.0.106 sebaczech/python-localstack-client:main
+        docker run --name python-localstack-client --rm -e LOCALSTACK_HOST=172.17.0.2 sebaczech/python-localstack-client:main
       volumeMounts:
         - mountPath: /var/run/
           name: dind-socket
