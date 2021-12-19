@@ -1,12 +1,10 @@
-import sys
-import os
-import pytest
-import localstack_client.session as boto3
 import botocore
+import pytest
 
-sys.path.append(os.path.abspath('../src'))
-import main_boto3
-from main_boto3 import LocalstackConfig
+# sys.path.append(os.path.abspath('../src'))
+import app.src.main_boto3 as main_boto3
+from app.src.main_boto3 import LocalstackConfig
+
 
 def test_hostname_is_not_empty():
     # given

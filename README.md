@@ -230,6 +230,12 @@ cd infra/localstack
 docker-compose up
 ```
 
+or using Python app:
+
+```
+localstack start
+```
+
 Test localstack:
 
 ```bash

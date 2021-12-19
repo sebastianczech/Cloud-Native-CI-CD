@@ -1,10 +1,5 @@
-import sys
-import os
-import pytest
-import localstack_client.session as boto3
-import botocore
-sys.path.append(os.path.abspath('../src'))
-import main_localstack_client
+# sys.path.append(os.path.abspath('../src'))
+import app.src.main_localstack_client as main_localstack_client
 
 
 def test_hostname_is_not_empty():
@@ -35,7 +30,6 @@ def test_time_is_not_empty():
 
     # then
     assert ":" in time
-
 
 # def test_cannot_get_s3_buckets_if_localstack_not_working():
 #     with pytest.raises(botocore.exceptions.EndpointConnectionError) as exception_info:
