@@ -1,0 +1,38 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cloud-native-app-default
+  namespace: cloud-native-app
+rules:
+  - apiGroups: [""]
+    resources: [pods"]
+    verbs: ["create","delete","get","list","patch","update","watch"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["create","delete","get","list","patch","update","watch"]
+  - apiGroups: [""]
+    resources: ["pods/log"]
+    verbs: [get","list","watch"]
+  - apiGroups: [""]
+    resources: ["services","secrets","configmaps","namespaces"]
+    verbs: ["get","list","create","delete","patch","update"]
+  - apiGroups: ["apps"]
+    resources: ["deployments","statefulsets","replicasets"]
+    verbs: ["get","list","create","delete","patch","update"]
+  - apiGroups: [""]
+    resources: ["ingresses/status"]
+    verbs: ["create","delete","get","list","patch","update","watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cloud-native-app-default
+  namespace: cloud-native-app
+subjects:
+  - kind: User
+    name: system:serviceaccount:cloud-native-app:default
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: cloud-native-app-default
+  apiGroup: rbac.authorization.k8s.io
