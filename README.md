@@ -214,6 +214,13 @@ Tekton pipelines, pipeline runs, tasks and task runs from dashboard are presente
 ![Tekton task](images/tkn_task.png "Tekton task")
 ![Tekton task run](images/tkn_task_run.png "Tekton task run")
 
+To remove all completed or failed pipeline runs, you can use commands:
+
+```bash
+kubectl delete pod --field-selector=status.phase==Failed
+kubectl delete pod --field-selector=status.phase==Succeeded
+```
+
 After finish of work to clean tasks and runs following commands can be used:
 
 ```bash
