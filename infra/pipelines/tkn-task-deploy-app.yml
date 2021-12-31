@@ -15,5 +15,5 @@ spec:
       script: |
         echo $(workspaces.source.path)
         ls -la $(workspaces.source.path)
-        kubectl delete -f $(workspaces.source.path)/infra/app --ignore-not-found=true
-        kubectl apply -f $(workspaces.source.path)/infra/app
+        kubectl delete -f $(workspaces.source.path)/infra/app/pod.yml --ignore-not-found=true
+        kubectl apply -f $(workspaces.source.path)/infra/app/pod.yml
