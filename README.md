@@ -139,6 +139,20 @@ Create tasks:
 kubectl apply -f infra/pipelines -n cloud-native-app
 ```
 
+Define RBAC:
+
+```bash
+kubectl apply -f infra/app/rbac.yml
+```
+
+Service accounts, cluster roles and bindings can be checked by commands:
+
+```bash
+kubectl get serviceaccounts -n cloud-native-app
+kubectl get clusterrole
+kubectl get clusterrolebinding
+```
+
 To check some of the objects, following commands can be used e.g. to show task:
 
 ```bash
