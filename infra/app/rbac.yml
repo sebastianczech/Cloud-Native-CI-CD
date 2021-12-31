@@ -1,12 +1,16 @@
-kind: Role
+# kind: Role
+kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: cloud-native-app-default
   namespace: cloud-native-app
 rules:
   - apiGroups: [""]
-    resources: [pods"]
+    resources: ["pods"]
     verbs: ["create","delete","get","list","patch","update","watch"]
+  - apiGroups: [""]
+    resources: ["serviceaccounts"]
+    verbs: ["get","list"]
   - apiGroups: [""]
     resources: ["pods/exec"]
     verbs: ["create","delete","get","list","patch","update","watch"]
@@ -24,15 +28,18 @@ rules:
     verbs: ["create","delete","get","list","patch","update","watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+# kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
-  name: cloud-native-app-default
+  name: cloud-native-app-default-binding
   namespace: cloud-native-app
 subjects:
   - kind: User
     name: system:serviceaccount:cloud-native-app:default
     apiGroup: rbac.authorization.k8s.io
+    namespace: cloud-native-app
 roleRef:
-  kind: Role
+  # kind: Role
+  kind: ClusterRole
   name: cloud-native-app-default
   apiGroup: rbac.authorization.k8s.io
