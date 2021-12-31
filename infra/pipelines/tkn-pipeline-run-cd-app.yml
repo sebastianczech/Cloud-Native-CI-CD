@@ -3,6 +3,7 @@ kind: PipelineRun
 metadata:
   name: pipeline-run-cd-app
 spec:
+  serviceAccountName: system:serviceaccount:cloud-native-app:default
   pipelineRef:
     name: pipeline-cd-app
   workspaces:
