@@ -14,7 +14,7 @@ spec:
         - mountPath: /var/run/
           name: dind-socket
   sidecars:
-    - image: docker:18.05-dind
+    - image: docker:dind
       name: server
       securityContext:
         privileged: true
