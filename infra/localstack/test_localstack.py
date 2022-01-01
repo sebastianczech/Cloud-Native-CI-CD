@@ -28,7 +28,7 @@ def test_localstack_s3_service_is_running():
 
     # then
     assert response.status_code == 200
-    assert response.json()['services']['s3'] == 'running'
+    assert response.json()['services']['s3'] == 'running' or response.json()['services']['s3'] == 'available'
 
 
 def test_localstack_bucket_can_be_created():
