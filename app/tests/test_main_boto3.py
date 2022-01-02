@@ -53,7 +53,18 @@ def test_bucket_is_created():
     # when
     main_boto3.s3_create_bucket(main_boto3.localstack_config(), "demo-bucket-py-test")
     buckets = [bucket["Name"] for bucket in main_boto3.s3_list_buckets(main_boto3.localstack_config())['Buckets']]
-    # main_boto3.s3_upload_file(main_boto3.localstack_config(), "demo-bucket-py-test")
 
     # then
     assert "demo-bucket-py-test" in buckets
+
+
+def test_file_is_uploaded_into_bucket():
+    # given
+    main_boto3.s3_create_bucket(main_boto3.localstack_config(), "demo-bucket-py-test")
+    main_boto3.s3_upload_file(main_boto3.localstack_config(), "demo-bucket-py-test")
+
+    # when
+    files_in_bucket = [file_in_bucket["Key"] for file_in_bucket in main_boto3.s3_list_object_in_bucket(main_boto3.localstack_config(), 'demo-bucket-py-test')]
+
+    # then
+    assert "simple_file_with_binary_data.txt" in files_in_bucket
