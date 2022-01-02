@@ -29,8 +29,15 @@ resource "aws_dynamodb_table" "demo-dynamodb-tf" {
   }
 }
 
-// S3
+// S3 BUCKET
 resource "aws_s3_bucket" "demo-bucket-tf" {
   bucket = "demo-bucket-tf"
   acl    = "public-read"
+}
+
+// S3 FILE IN BUCKET
+resource "aws_s3_bucket_object" "file-upload-tf" {
+  bucket  = "demo-bucket-tf"
+  key     = "file-upload-tf"
+  content = "File created by Terraform"
 }
