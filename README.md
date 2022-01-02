@@ -297,6 +297,7 @@ Download files from S3 bucket:
 ```bash
 aws --endpoint-url=http://localhost:4566 s3 ls s3://demo-bucket-py
 aws --endpoint-url=http://localhost:4566 s3 cp s3://demo-bucket-py/simple_file_with_binary_data.txt .
+aws --endpoint-url=http://localhost:4566 s3 cp simple_file_with_binary_data.txt s3://demo-bucket-py
 ```
 
 Publish message to SNS:
