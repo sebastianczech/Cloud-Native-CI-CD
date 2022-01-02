@@ -74,6 +74,14 @@ def s3_list_object_in_bucket(localstackConfig, bucket):
     return s3.list_objects(Bucket=bucket)['Contents']
 
 
+def localstack_config():
+    return LocalstackConfig(endpoint_url=localstack_url(),
+                                      use_ssl=False,
+                                      aws_access_key_id='test',
+                                      aws_secret_access_key='test',
+                                      region_name='us-east-1')
+
+
 if __name__ == "__main__":
     # Print host, config and time
     print("HOST: " + info_hostname())
@@ -81,25 +89,18 @@ if __name__ == "__main__":
     print("CONFIG: " + info_config())
     print("TIME: ", info_time())
 
-    # Prepare Localstack configuration
-    localstackConfig = LocalstackConfig(endpoint_url=localstack_url(),
-                                  use_ssl=False,
-                                  aws_access_key_id='test',
-                                  aws_secret_access_key='test',
-                                  region_name='us-east-1')
-
     # Create bucket if not exists
-    s3_create_bucket(localstackConfig, 'demo-bucket-py')
+    s3_create_bucket(localstack_config(), 'demo-bucket-py')
 
     # Upload binary data
-    s3_upload_file(localstackConfig, 'demo-bucket-py')
+    s3_upload_file(localstack_config(), 'demo-bucket-py')
 
     # Print out bucket names
     print("\nS3 buckets:")
-    for bucket in s3_list_buckets(localstackConfig)['Buckets']:
+    for bucket in s3_list_buckets(localstack_config())['Buckets']:
         print("- " + bucket['Name'])
 
     # Print out bucket files
     print("\nFiles in demo-bucket-py:")
-    for obj in s3_list_object_in_bucket(localstackConfig, 'demo-bucket-py'):
+    for obj in s3_list_object_in_bucket(localstack_config(), 'demo-bucket-py'):
         print("- " + obj['Key'])
