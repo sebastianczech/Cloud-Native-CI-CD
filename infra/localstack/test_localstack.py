@@ -10,7 +10,7 @@ def localstack_url(path):
     return protocol + '://' + address + ':' + port + '/' + path
 
 
-def localstack_config():
+def localstack_config_s3():
     return boto3.client('s3',
                       endpoint_url=localstack_url(''),
                       use_ssl=False,
@@ -43,7 +43,7 @@ def test_localstack_s3_service_is_running():
 
 def test_localstack_bucket_can_be_created():
     # given
-    s3 = localstack_config()
+    s3 = localstack_config_s3()
     bucket_name = 'demo-bucket-py-test'
 
     # when
@@ -59,7 +59,7 @@ def test_localstack_bucket_can_be_created():
 
 def test_localstack_file_is_uploaded_into_bucket():
     # given
-    s3 = localstack_config()
+    s3 = localstack_config_s3()
     bucket_name = 'demo-bucket-py-test'
     binary_data = b'Binary data stored in S3'
     file_name = 'test_file_with_binary_data.txt'
