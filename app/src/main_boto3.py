@@ -33,27 +33,6 @@ def localstack_url():
         return "http://localhost:4566"
 
 
-def s3_list_buckets(s3):
-    return s3.list_buckets()
-
-
-def s3_upload_file(s3, bucket):
-    binary_data = b'Binary data stored in S3'
-    s3.put_object(Body=binary_data, Bucket=bucket, Key='simple_file_with_binary_data.txt')
-
-
-def s3_create_bucket(s3, bucket):
-    s3.create_bucket(Bucket=bucket)
-
-
-def s3_list_object_in_bucket(s3, bucket):
-    return s3.list_objects(Bucket=bucket)['Contents']
-
-
-def sns_list_topics(sns):
-    return sns.list_topics()
-
-
 def localstack_config():
     return LocalstackConfig(endpoint_url=localstack_url(),
                             use_ssl=False,
@@ -69,6 +48,31 @@ def localstack_config_for_service(service, config):
                         aws_access_key_id=config.aws_access_key_id,
                         aws_secret_access_key=config.aws_secret_access_key,
                         region_name=config.region_name)
+
+
+def s3_list_buckets(s3):
+    return s3.list_buckets()
+
+
+def s3_create_bucket(s3, bucket):
+    s3.create_bucket(Bucket=bucket)
+
+
+def s3_upload_file(s3, bucket):
+    binary_data = b'Binary data stored in S3'
+    s3.put_object(Body=binary_data, Bucket=bucket, Key='simple_file_with_binary_data.txt')
+
+
+def s3_list_object_in_bucket(s3, bucket):
+    return s3.list_objects(Bucket=bucket)['Contents']
+
+
+def sns_list_topics(sns):
+    return sns.list_topics()
+
+
+def sqs_list_queues(sqs):
+    return sqs.list_queues()
 
 
 if __name__ == "__main__":
@@ -95,6 +99,12 @@ if __name__ == "__main__":
         print("- " + obj['Key'])
 
     # Print out topics names
-    print("\nSNS topic:")
+    print("\nSNS topics:")
     for topic in sns_list_topics(localstack_config_for_service('sns', localstack_config()))['Topics']:
         print("- " + topic['TopicArn'])
+
+    # Print out queues names
+    print("\nSQS queues:")
+    for queue in sqs_list_queues(localstack_config_for_service('sqs', localstack_config()))['QueueUrls']:
+        print("- " + queue)
+
