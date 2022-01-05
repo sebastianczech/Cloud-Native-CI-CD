@@ -1,4 +1,7 @@
-// AWS PROVIDER (LOCALSTACK)
+# Official Terraform documentation for AWS provider:
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+
+# AWS PROVIDER (LOCALSTACK)
 provider "aws" {
   region                      = "us-east-1"
   access_key                  = "test"
@@ -13,10 +16,12 @@ provider "aws" {
     lambda   = "http://localhost:4566"
     kinesis  = "http://localhost:4566"
     s3  = "http://localhost:4566"
+    sqs  = "http://localhost:4566"
+    sns  = "http://localhost:4566"
   }
 }
 
-// DYNAMODB TABLES
+# DYNAMODB TABLES
 resource "aws_dynamodb_table" "demo-dynamodb-tf" {
   name           = "demo-dynamodb-tf"
   read_capacity  = "20"
@@ -29,15 +34,25 @@ resource "aws_dynamodb_table" "demo-dynamodb-tf" {
   }
 }
 
-// S3 BUCKET
+# S3 BUCKET
 resource "aws_s3_bucket" "demo-bucket-tf" {
   bucket = "demo-bucket-tf"
   acl    = "public-read"
 }
 
-// S3 FILE IN BUCKET
+# S3 FILE IN BUCKET
 resource "aws_s3_bucket_object" "file-upload-tf" {
   bucket  = "demo-bucket-tf"
   key     = "file-upload-tf"
   content = "File created by Terraform"
+}
+
+# SQS QUEUE
+resource "aws_sqs_queue" "demo-sqs-tf" {
+  name = "demo-sqs-tf"
+}
+
+# SNS TOPIC
+resource "aws_sns_topic" "demo-sns-tf" {
+  name = "demo-sns-tf"
 }
