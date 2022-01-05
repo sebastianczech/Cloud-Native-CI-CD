@@ -75,8 +75,16 @@ def sns_list_topics(sns):
     return sns.list_topics()
 
 
+def sns_create_topic(sns, topic):
+    sns.create_topic(Name=topic)
+
+
 def sqs_list_queues(sqs):
     return sqs.list_queues()
+
+
+def sqs_create_queue(sqs, queue):
+    sqs.create_queue(QueueName=queue)
 
 
 if __name__ == "__main__":
@@ -102,10 +110,16 @@ if __name__ == "__main__":
     for obj in s3_list_object_in_bucket(localstack_config_for_service('s3', localstack_config()), 'demo-bucket-py'):
         print("- " + obj['Key'])
 
+    # Create SNS topic
+    sns_create_topic(localstack_config_for_service('sns', localstack_config()), 'demo-sns-py')
+
     # Print out topics names
     print("\nSNS topics:")
     for topic in sns_list_topics(localstack_config_for_service('sns', localstack_config()))['Topics']:
         print("- " + topic['TopicArn'])
+
+    # Create SQS queue
+    sqs_create_queue(localstack_config_for_service('sqs', localstack_config()), 'demo-sqs-py')
 
     # Print out queues names
     print("\nSQS queues:")
