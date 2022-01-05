@@ -50,6 +50,10 @@ def localstack_config_for_service(service, config):
                         region_name=config.region_name)
 
 
+# Examples of usage each below service is based on:
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/index.html
+
+
 def s3_list_buckets(s3):
     return s3.list_buckets()
 
