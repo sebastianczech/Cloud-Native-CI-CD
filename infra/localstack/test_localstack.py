@@ -115,3 +115,19 @@ def test_localstack_sns_service_is_running():
     # then
     assert response.status_code == 200
     assert response.json()['services']['sns'] == 'running' or response.json()['services']['sns'] == 'available'
+
+
+def test_localstack_sns_topic_can_be_created():
+    # given
+    sns = localstack_config('sns')
+    topic_name = 'demo-sns-py-test'
+
+    # when
+    response_create_topic = sns.create_topic(Name=topic_name)
+    response_list_topic = sns.list_topics()
+    topics_names = [queue["TopicArn"].split(":")[-1] for queue in response_list_topic['Topics']]
+
+    # then
+    assert response_create_topic['ResponseMetadata']['HTTPStatusCode'] == 200
+    assert response_list_topic['ResponseMetadata']['HTTPStatusCode'] == 200
+    assert topic_name in topics_names
