@@ -10,8 +10,8 @@ def localstack_url(path):
     return protocol + '://' + address + ':' + port + '/' + path
 
 
-def localstack_config_s3():
-    return boto3.client('s3',
+def localstack_config(service_name):
+    return boto3.client(service_name,
                       endpoint_url=localstack_url(''),
                       use_ssl=False,
                       aws_access_key_id='test',
@@ -43,7 +43,7 @@ def test_localstack_s3_service_is_running():
 
 def test_localstack_s3_bucket_can_be_created():
     # given
-    s3 = localstack_config_s3()
+    s3 = localstack_config('s3')
     bucket_name = 'demo-bucket-py-test'
 
     # when
@@ -59,7 +59,7 @@ def test_localstack_s3_bucket_can_be_created():
 
 def test_localstack_s3_file_is_uploaded_into_bucket():
     # given
-    s3 = localstack_config_s3()
+    s3 = localstack_config('s3')
     bucket_name = 'demo-bucket-py-test'
     binary_data = b'Binary data stored in S3'
     file_name = 'test_file_with_binary_data.txt'
@@ -87,6 +87,22 @@ def test_localstack_sqs_service_is_running():
     # then
     assert response.status_code == 200
     assert response.json()['services']['sqs'] == 'running' or response.json()['services']['sqs'] == 'available'
+
+
+def test_localstack_sqs_queue_can_be_created():
+    # given
+    sqs = localstack_config('sqs')
+    queue_name = 'demo-sqs-py-test'
+
+    # when
+    response_create_queue = sqs.create_queue(QueueName=queue_name)
+    response_list_queues = sqs.list_queues()
+    queues_names = [queue.split("/")[-1] for queue in response_list_queues['QueueUrls']]
+
+    # then
+    assert response_create_queue['ResponseMetadata']['HTTPStatusCode'] == 200
+    assert response_list_queues['ResponseMetadata']['HTTPStatusCode'] == 200
+    assert queue_name in queues_names
 
 
 def test_localstack_sns_service_is_running():
