@@ -4,19 +4,21 @@ import boto3
 
 
 def localstack_url(path):
-    protocol = os.environ.get('INFRA_LOCALSTACK_PROTOCOL') if os.environ.get('INFRA_LOCALSTACK_PROTOCOL') is not None else 'http'
-    address = os.environ.get('INFRA_LOCALSTACK_ADDRESS') if os.environ.get('INFRA_LOCALSTACK_ADDRESS') is not None else '127.0.0.1'
+    protocol = os.environ.get('INFRA_LOCALSTACK_PROTOCOL') if os.environ.get(
+        'INFRA_LOCALSTACK_PROTOCOL') is not None else 'http'
+    address = os.environ.get('INFRA_LOCALSTACK_ADDRESS') if os.environ.get(
+        'INFRA_LOCALSTACK_ADDRESS') is not None else '127.0.0.1'
     port = os.environ.get('INFRA_LOCALSTACK_PORT') if os.environ.get('INFRA_LOCALSTACK_PORT') is not None else '4566'
     return protocol + '://' + address + ':' + port + '/' + path
 
 
 def localstack_config(service_name):
     return boto3.client(service_name,
-                      endpoint_url=localstack_url(''),
-                      use_ssl=False,
-                      aws_access_key_id='test',
-                      aws_secret_access_key='test',
-                      region_name='us-east-1')
+                        endpoint_url=localstack_url(''),
+                        use_ssl=False,
+                        aws_access_key_id='test',
+                        aws_secret_access_key='test',
+                        region_name='us-east-1')
 
 
 def test_localstack_in_docker_is_running():
