@@ -41,7 +41,7 @@ def test_localstack_s3_service_is_running():
     assert response.json()['services']['s3'] == 'running' or response.json()['services']['s3'] == 'available'
 
 
-def test_localstack_bucket_can_be_created():
+def test_localstack_s3_bucket_can_be_created():
     # given
     s3 = localstack_config_s3()
     bucket_name = 'demo-bucket-py-test'
@@ -57,7 +57,7 @@ def test_localstack_bucket_can_be_created():
     assert bucket_name in buckets_names
 
 
-def test_localstack_file_is_uploaded_into_bucket():
+def test_localstack_s3_file_is_uploaded_into_bucket():
     # given
     s3 = localstack_config_s3()
     bucket_name = 'demo-bucket-py-test'
@@ -75,3 +75,27 @@ def test_localstack_file_is_uploaded_into_bucket():
     assert response_upload_file['ResponseMetadata']['HTTPStatusCode'] == 200
     assert response_files_in_buckets['ResponseMetadata']['HTTPStatusCode'] == 200
     assert file_name in files_in_bucket
+
+
+def test_localstack_sqs_service_is_running():
+    # given
+
+    # when
+    response = requests.get(localstack_url('health'))
+    print(response.json())
+
+    # then
+    assert response.status_code == 200
+    assert response.json()['services']['sqs'] == 'running' or response.json()['services']['sqs'] == 'available'
+
+
+def test_localstack_sns_service_is_running():
+    # given
+
+    # when
+    response = requests.get(localstack_url('health'))
+    print(response.json())
+
+    # then
+    assert response.status_code == 200
+    assert response.json()['services']['sns'] == 'running' or response.json()['services']['sns'] == 'available'
