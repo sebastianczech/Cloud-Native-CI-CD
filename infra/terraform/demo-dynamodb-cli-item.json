@@ -1,0 +1,4 @@
+{
+    "FirstName": {"S": "Jan"},
+    "LastName": {"S": "Kowalski"}
+}

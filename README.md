@@ -274,12 +274,34 @@ terraform plan
 terraform apply --auto-approve
 ```
 
-Check DynamoDB:
+Create table in DynamoDB and check it:
 
 ```bash
 aws --endpoint-url=http://localhost:4566 dynamodb list-tables
 
-aws --endpoint-url http://localhost:4566 dynamodb scan --table-name demo-dynamodb-tf
+aws --endpoint-url=http://localhost:4566 dynamodb create-table \
+    --table-name demo-dynamodb-cli \
+    --attribute-definitions AttributeName=FirstName,AttributeType=S AttributeName=LastName,AttributeType=S \
+    --key-schema AttributeName=FirstName,KeyType=HASH AttributeName=LastName,KeyType=RANGE \
+    --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
+    --tags Key=Owner,Value=Sebastian
+
+aws --endpoint-url http://localhost:4566 dynamodb describe-table --table-name demo-dynamodb-cli
+
+cat > infra/terraform/demo-dynamodb-cli-item.json << EOF
+{
+    "FirstName": {"S": "Jan"},
+    "LastName": {"S": "Kowalski"}
+}
+EOF
+
+aws --endpoint-url http://localhost:4566 dynamodb put-item \
+    --table-name demo-dynamodb-cli \
+    --item file://infra/terraform/demo-dynamodb-cli-item.json \
+    --return-consumed-capacity TOTAL \
+    --return-item-collection-metrics SIZE
+
+aws --endpoint-url http://localhost:4566 dynamodb scan --table-name demo-dynamodb-cli
 ```
 
 Create S3 bucket and check it:
