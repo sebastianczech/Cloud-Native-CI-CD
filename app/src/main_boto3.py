@@ -87,12 +87,69 @@ def sqs_create_queue(sqs, queue):
     sqs.create_queue(QueueName=queue)
 
 
+def dynamodb_delete_table(dynamodb, table_name):
+    dynamodb.delete_table(
+        TableName=table_name
+    )
+
+
+def dynamodb_create_table(dynamodb, table_name):
+    dynamodb.create_table(
+        AttributeDefinitions=[
+            {
+                'AttributeName': 'FirstName',
+                'AttributeType': 'S'
+            },
+            {
+                'AttributeName': 'LastName',
+                'AttributeType': 'S'
+            },
+        ],
+        TableName=table_name,
+        KeySchema=[
+            {
+                'AttributeName': 'FirstName',
+                'KeyType': 'HASH'
+            },
+            {
+                'AttributeName': 'LastName',
+                'KeyType': 'RANGE'
+            },
+        ],
+        ProvisionedThroughput={
+            'ReadCapacityUnits': 123,
+            'WriteCapacityUnits': 123
+        },
+        Tags=[
+            {
+                'Key': 'Owner',
+                'Value': 'Sebastian'
+            },
+        ]
+    )
+
+
+def dynamodb_list_tables(dynamodb):
+    return dynamodb.list_tables()
+
+
 if __name__ == "__main__":
     # Print host, config and time
     print("HOST: " + info_hostname())
     print("LOCALSTACK: " + localstack_url())
     print("CONFIG: " + info_config())
     print("TIME: ", info_time())
+
+    # Create dynamodb table
+    dynamodb_create_table(localstack_config_for_service('dynamodb', localstack_config()), 'demo-dynamodb-py')
+
+    # Print out dynamodb tables names
+    print("\nDynamoDB tables:")
+    for table in dynamodb_list_tables(localstack_config_for_service('dynamodb', localstack_config()))['TableNames']:
+        print("- " + table)
+
+    # Delete dynamodb table
+    dynamodb_delete_table(localstack_config_for_service('dynamodb', localstack_config()), 'demo-dynamodb-py')
 
     # Create bucket if not exists
     s3_create_bucket(localstack_config_for_service('s3', localstack_config()), 'demo-bucket-py')
