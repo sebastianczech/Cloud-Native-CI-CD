@@ -133,3 +133,69 @@ def test_localstack_sns_topic_can_be_created():
     assert response_create_topic['ResponseMetadata']['HTTPStatusCode'] == 200
     assert response_list_topic['ResponseMetadata']['HTTPStatusCode'] == 200
     assert topic_name in topics_names
+
+
+def test_localstack_dynamodb_service_is_running():
+    # given
+
+    # when
+    response = requests.get(localstack_url('health'))
+    print(response.json())
+
+    # then
+    assert response.status_code == 200
+    assert response.json()['services']['dynamodb'] == 'running' or response.json()['services']['dynamodb'] == 'available'
+
+
+def test_localstack_dynamodb_table_can_be_created():
+    # given
+    dynamodb = localstack_config('dynamodb')
+    table_name = 'demo-dynamodb-py-test'
+
+    # when
+    response_create_table = dynamodb.create_table(
+        AttributeDefinitions=[
+            {
+                'AttributeName': 'FirstName',
+                'AttributeType': 'S'
+            },
+            {
+                'AttributeName': 'LastName',
+                'AttributeType': 'S'
+            },
+        ],
+        TableName=table_name,
+        KeySchema=[
+            {
+                'AttributeName': 'FirstName',
+                'KeyType': 'HASH'
+            },
+            {
+                'AttributeName': 'LastName',
+                'KeyType': 'RANGE'
+            },
+        ],
+        ProvisionedThroughput={
+            'ReadCapacityUnits': 123,
+            'WriteCapacityUnits': 123
+        },
+        Tags=[
+            {
+                'Key': 'Owner',
+                'Value': 'Sebastian'
+            },
+        ]
+    )
+
+    response_list_tables = dynamodb.list_tables()
+    tables_names = [table for table in response_list_tables['TableNames']]
+
+    response_delete_table = dynamodb.delete_table(
+        TableName=table_name
+    )
+
+    # then
+    assert response_create_table['ResponseMetadata']['HTTPStatusCode'] == 200
+    assert response_list_tables['ResponseMetadata']['HTTPStatusCode'] == 200
+    assert response_delete_table['ResponseMetadata']['HTTPStatusCode'] == 200
+    assert table_name in tables_names
