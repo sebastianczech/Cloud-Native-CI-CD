@@ -349,6 +349,34 @@ aws --endpoint-url=http://localhost:4566 sns subscribe \
 aws --endpoint-url=http://localhost:4566 sqs receive-message --queue-url http://localhost:4566/000000000000/demo-sqs-cli
 ```
 
+List Lambda functions:
+
+```
+aws --endpoint-url http://localhost:4566 lambda list-functions
+```
+
+Create simple function for Lambda:
+
+```
+cd app/src
+zip lambda_hello_world.zip lambda_hello_world.py
+
+aws --endpoint-url=http://localhost:4566 lambda create-function \
+    --function-name lambda_hello_world_cli \
+    --zip-file fileb://lambda_hello_world.zip \
+    --role arn:aws:iam::123456789012:role/service-role/MyTestFunction-role-tges6bf
+```
+
+Invoke function:
+
+```
+aws --endpoint-url=http://localhost:4566 lambda invoke \
+    --function-name lambda_hello_world_cli \
+    --cli-binary-format raw-in-base64-out \
+    --payload file://lambda_hello_world_input.json \
+    lambda_hello_world_output.json
+```
+
 ## Application
 
 ### Running
