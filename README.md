@@ -367,6 +367,18 @@ aws --endpoint-url=http://localhost:4566 lambda create-function \
     --role arn:aws:iam::123456789012:role/service-role/MyTestFunction-role-tges6bf
 ```
 
+Check function:
+
+```
+aws --endpoint-url=http://localhost:4566 lambda list-functions
+
+aws --endpoint-url=http://localhost:4566 lambda get-function --function-name lambda_hello_world_cli
+
+curl http://localhost:4566/2015-03-31/functions/lambda_hello_world_cli/code --output lambda_hello_world.zip
+unzip lambda_hello_world.zip
+cat lambda_hello_world.py
+```
+
 Invoke function:
 
 ```
